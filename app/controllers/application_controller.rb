@@ -7,7 +7,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
-    "Welcome to Bibliofile"
+    erb :index
   end
 
 end
