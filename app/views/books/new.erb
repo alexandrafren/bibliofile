@@ -1,0 +1,18 @@
+<p>To add a new book to your list, fill out the form and hit submit.</p>
+<form action='/books' method='post'>
+  <label>Name</label>
+  <input type='text' name='title'>
+  <label>Author</label>
+  <input type='text' name='author'>
+  <br>
+  <label>Rating</label>
+  <input type='radio' name='rating' value='1'>1
+  <input type='radio' name='rating' value='2'>2
+  <input type='radio' name='rating' value='3'>3
+  <input type='radio' name='rating' value='4'>4
+  <input type='radio' name='rating' value='5'>5
+  <br>
+  <label>Review</label>
+  <input type='text' name='review'>
+  <input type='submit' value='Add This Book!'>
+</form>

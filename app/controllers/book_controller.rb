@@ -5,6 +5,7 @@ class BookController < ApplicationController
   end
 
   get '/books/new' do
+    erb :'/books/new'
   end
 
   get '/books/:id/edit' do
