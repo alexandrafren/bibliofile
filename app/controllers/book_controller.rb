@@ -15,6 +15,7 @@ class BookController < ApplicationController
     @book.save
     @user.books << @book
     @bookrating = BookUser.new(user_id: current_user.id, book_id: @book.id, rating: params[:rating], review: params[:review])
+    redirect to '/books'
   end
 
   get '/books/:id/edit' do
