@@ -41,5 +41,10 @@ class UserController < ApplicationController
     redirect to '/login'
   end
 
+  get '/user/:slug' do
+    @user = User.find_by_slug(params[:slug])
+    @books = @user.books
+    erb :'/users/show'
+  end
 
 end
