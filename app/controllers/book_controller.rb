@@ -1,5 +1,7 @@
 class BookController < ApplicationController
   get '/books' do
+    @books = Book.all
+    erb :'/books/books'
   end
 
   get '/books/new' do
