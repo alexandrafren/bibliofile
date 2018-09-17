@@ -1,0 +1,14 @@
+<p>To add this book to your list, fill out the form and hit submit.</p>
+<p><%= @book.title %> by <%= @book.author %>
+<form action='/books/<%=@book.slug%>' method='post'>
+  <label>Rating</label>
+  <input type='radio' name='rating' value='1'>1
+  <input type='radio' name='rating' value='2'>2
+  <input type='radio' name='rating' value='3'>3
+  <input type='radio' name='rating' value='4'>4
+  <input type='radio' name='rating' value='5'>5
+  <br>
+  <label>Review</label>
+  <input type='text' name='review'>
+  <input type='submit' value='Add This Book!'>
+</form>

@@ -19,8 +19,23 @@ class BookController < ApplicationController
     redirect to '/books'
   end
 
+  get '/books/new/:slug' do
+    @book = Book.find_by_slug(params[:slug])
+    erb :'/books/find_by'
+  end
+
+  post '/books/:slug' do
+    @book = Book.find_by_slug(params[:slug])
+    @user = current_user
+    @user.books << @book
+    Rating.create(user_id: current_user.id, book_id: @book.id, value: params[:rating])
+    Review.create(user_id: current_user.id, book_id: @book.id, content: params[:review])
+    redirect to '/books'
+  end
+
   get '/books/:slug' do
     @book = Book.find_by_slug(params[:slug])
+    erb :'/books/show'
   end
 
 end
