@@ -4,7 +4,7 @@
     <% Review.all.each do |view| %>
       <% if view.book_id == @book.id %>
       <% user = User.find_by_id(view.user_id) %>
-      <a href='user/<%= user.username %>'><%=user.username%></a> said...
+      <a href='/user/<%= user.username %>'><%=user.username%></a> said...
       <%=  view.content %>
       <br>
         <% end %>
