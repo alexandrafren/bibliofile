@@ -1,0 +1,7 @@
+<p> These are the books that <%= @user.username %> has read this year...</p>
+
+<% @books.each do |book| %>
+  <a href='/books/<%=book.slug%>'><%=book.title%> by <%=book.author%></a>
+  <p>They rate this book <%=book.users.rating %> out of 5.</p>
+  <p>And their review is...<%=book.users.review%></p>
+  <% end %>

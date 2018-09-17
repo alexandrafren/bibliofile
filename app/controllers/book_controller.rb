@@ -14,17 +14,17 @@ class BookController < ApplicationController
     @book.author = params[:author]
     @book.save
     @user.books << @book
-    @bookrating = BookUser.new(user_id: current_user.id, book_id: @book.id, rating: params[:rating], review: params[:review])
+    BookUser.new(user_id: current_user.id, book_id: @book.id, rating: params[:rating], review: params[:review])
     redirect to '/books'
   end
 
-  get '/books/:id/edit' do
+  get '/books/:slug/edit' do
   end
 
-  get '/books/:id/delete' do
+  get '/books/:slug/delete' do
   end
 
-  get '/books/:id' do
+  get '/books/:slug' do
   end
 
 end

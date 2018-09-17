@@ -14,7 +14,6 @@ class UserController < ApplicationController
     @user.password = params[:password]
     @user.save
     session[:user_id] = @user.id
-    binding.pry
     redirect to '/books'
   end
 
