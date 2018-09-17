@@ -21,6 +21,22 @@ class BookController < ApplicationController
   end
 
   get '/books/:slug/edit' do
+    @book = Book.find_by_slug(params[:slug])
+    erb :'/books/edit'
+  end
+
+  patch '/books/:slug' do
+    @book = Book.find_by_slug(params[:slug])
+    if params[:review] != nil
+      @book.review.content = params[:review]
+      if params[:rating] != nil
+        @book.rating.value = params[:rating]
+        @book.save
+        redirect to '/books/#{@book.slug}'
+      end
+    end
+    else
+      redirect to '/books/new'
   end
 
   get '/books/:slug/delete' do

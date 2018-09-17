@@ -1,0 +1,16 @@
+<p>Editing <%current_user.username%>'s review of <%@book.title%>.</p>
+<p>Current Rating:<%= @book.rating.value %> out of 5.</p>
+<p>Current Review:<%= @book.review.content %></p>
+<form action='/books/<%@book.slug%>' method='patch'>
+  <input id="hidden" type="hidden" name="_method" value="patch">
+  <label>Rating</label>
+  <input type='radio' name='rating' value='1'>1
+  <input type='radio' name='rating' value='2'>2
+  <input type='radio' name='rating' value='3'>3
+  <input type='radio' name='rating' value='4'>4
+  <input type='radio' name='rating' value='5'>5
+  <br>
+  <label>Review</label>
+  <input type='text' name='review'>
+  <input type='submit' value='Add This Book!'>
+</form>
