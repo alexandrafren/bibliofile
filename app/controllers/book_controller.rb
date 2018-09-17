@@ -20,6 +20,7 @@ class BookController < ApplicationController
   end
 
   get '/books/:slug' do
+    @book = Book.find_by_slug(params[:slug])
   end
 
 end
