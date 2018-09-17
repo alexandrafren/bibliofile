@@ -14,7 +14,8 @@ class BookController < ApplicationController
     @book.author = params[:author]
     @book.save
     @user.books << @book
-    BookUser.new(user_id: current_user.id, book_id: @book.id, rating: params[:rating], review: params[:review])
+    rating = Rating.create(user_id: current_user.id, book_id: @book.id, value: params[:rating])
+    review = Review.create(user_id: current_user.id, book_id: @book.id, content: params[:review])
     redirect to '/books'
   end
 
