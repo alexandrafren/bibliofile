@@ -5,7 +5,11 @@ class UserController < ApplicationController
   end
 
   get '/users/new' do
-    erb :'/users/new'
+    if logged_in?
+      redirect to '/books'
+    else
+      erb :'/users/new'
+    end
   end
 
   post '/users' do

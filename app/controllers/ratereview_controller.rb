@@ -4,24 +4,30 @@ class RatereviewController < ApplicationController
     @book = Book.find_by_slug(params[:slug])
     if logged_in?
       erb :'/books/edit'
+    end
   end
 
   patch '/books/:slug' do
     @book = Book.find_by_slug(params[:slug])
-    @review = Review.find_by(user_id: current_user)
-    @rating = Review.find_by(user_id: current_user)
+    @review = Review.find_by(user_id: current_user, book_id: @book.id)
+    @rating = Review.find_by(user_id: current_user, book_id: @book.id)
     if params[:review] != nil
-      @book.@review.content = params[:review]
+      @review.content = params[:review]
+      @review.save
       if params[:rating] != nil
-        @book.@rating.value = params[:rating]
-        @book.save
+        @rating.value = params[:rating]
+        @rating.save
         redirect to '/books/#{@book.slug}'
       end
     end
-    else
-      redirect to '/books/new'
   end
 
-  get '/books/:slug/delete' do
+  delete '/books/:slug/delete' do
+    @book = Book.find_by_slug(params[:slug])
+    @review = Review.find_by(user_id: current_user, book_id: @book.id)
+    @rating = Review.find_by(user_id: current_user, book_id: @book.id)
+    @review.delete
+    @rating.delete
+    redirect to '/books'
   end
 end

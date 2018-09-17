@@ -1,5 +1,5 @@
 <p>Click on a book title to see author, average rating, and reviews.</p>
 <% @books.each do |book| %>
-<a href='/books/<%=book.id%>'><%=book.title%></a>
+<a href='/books/<%=book.slug%>'><%=book.title%></a>
 <br>
 <% end %>
