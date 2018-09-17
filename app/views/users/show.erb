@@ -2,6 +2,16 @@
 
 <% @books.each do |book| %>
   <a href='/books/<%=book.slug%>'><%=book.title%> by <%=book.author%></a>
-  <p>They rate this book <%=book.users.rating %> out of 5.</p>
-  <p>And their review is...<%=book.users.review%></p>
+  <p>They rate this book <% Rating.all.each do |rate| %>
+    <% if rate.book_id == book.id && rate.user_id == current_user.id %>
+    <%= rate.value %>
+    <% end %>
+  <% end %> out of 5.</p>
+  <p>And their review is...<% Review.all.each do |view| %>
+    <% if view.book_id == book.id && view.user_id == current_user.id %>
+    <%= view.content %>
+    <% end %>
+  <% end %></p>
+  <br>
+  <br>
   <% end %>
