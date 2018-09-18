@@ -1,8 +1,10 @@
-<p>Click on a book title to see author, average rating, and reviews.</p>
-<% @books.each do |book| %>
-<a href='/books/<%=book.slug%>'><%=book.title%></a>
+<p class="main-page">These are the books users have read this year. Click on a book title to see author, average rating, and reviews.</p>
+<ul>
+  <% @books.each do |book| %>
+  <li><a href='/books/<%=book.slug%>'><%=book.title%></a></li>
 <br>
 <% end %>
+</ul>
 
 <br>
-<a href='/books/new'>Add A New Book</a>
+<div class="add"><a href='/books/new'>Add A New Book</a></div>

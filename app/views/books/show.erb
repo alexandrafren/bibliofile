@@ -11,9 +11,10 @@
       <% end %>
      </p>
   <br>
-  <a href='/books/new/<%=@book.slug%>'>Add This Book to Your Shelf</a>
+  <div class="show-button"><a href='/books/new/<%=@book.slug%>'>Add This Book to Your Shelf</a>
   <br>
-  <a href='/books/<%=@book.slug%>/edit'>Edit Your Review of this Book</a>
+  <br>
+  <a href='/books/<%=@book.slug%>/edit'>Edit Your Review of this Book</a></div>
   <br>
   <% if logged_in? %>
   <form method="post" action="/books/<%=@book.slug%>/delete">

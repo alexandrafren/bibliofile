@@ -1,0 +1,46 @@
+body {
+  background-color: #fff2e8;
+}
+
+h1 {
+  text-align: center;
+  color: grey;
+}
+
+.main-page {
+  text-align: center;
+}
+
+.add {
+  text-align: center;
+}
+
+.add a {
+  text-align: center;
+  text-decoration: none;
+  padding: 0px 15px 0px 15px;
+  border: 1px black solid;
+  background-color: white;
+  color: black;
+}
+
+.show-button a {
+  background-color: #e0e0e0;
+  color: black;
+  border: 1px black solid;
+  text-decoration: none;
+  padding: 2px;
+}
+
+.nav-bar {
+  text-align: center;
+  padding: 3px;
+}
+
+.nav-bar a {
+  text-decoration: none;
+  padding: 0px 15px 0px 15px;
+  border: 1px black solid;
+  background-color: white;
+  color: black;
+}
