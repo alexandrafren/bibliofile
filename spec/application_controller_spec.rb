@@ -215,68 +215,6 @@ describe 'new action' do
         visit '/books/booking!/edit'
         expect(page.body).to include(Book.title)
       end
-
-      it 'lets a user edit their own Book if they are logged in' do
-        user = User.create(:username => "becky567", :password => "kittens")
-        Book = Book.create(:title => "Booking!", :user_id => 1)
-        visit '/login'
-
-        fill_in(:username, :with => "becky567")
-        fill_in(:password, :with => "kittens")
-        click_button 'submit'
-        visit '/books/1/edit'
-
-        fill_in(:title, :with => "i love Booking")
-
-        click_button 'submit'
-        expect(Book.find_by(:title => "i love Booking")).to be_instance_of(Book)
-        expect(Book.find_by(:title => "Booking!")).to eq(nil)
-        expect(page.status_code).to eq(200)
-      end
-
-  describe 'delete action' do
-    context "logged in" do
-      it 'lets a user delete their own Book if they are logged in' do
-        user = User.create(:username => "becky567", :password => "kittens")
-        Book = Book.create(:title => "Booking!", :user_id => 1)
-        visit '/login'
-
-        fill_in(:username, :with => "becky567")
-        fill_in(:password, :with => "kittens")
-        click_button 'submit'
-        visit 'Books/1'
-        click_button "Delete Book"
-        expect(page.status_code).to eq(200)
-        expect(Book.find_by(:title => "Booking!")).to eq(nil)
-      end
-
-      it 'does not let a user delete a Book they did not create' do
-        user1 = User.create(:username => "becky567", :password => "kittens")
-        Book1 = Book.create(:title => "Booking!", :user_id => user1.id)
-
-        user2 = User.create(:username => "silverstallion", :password => "horses")
-        Book2 = Book.create(:title => "look at this Book", :user_id => user2.id)
-
-        visit '/login'
-
-        fill_in(:username, :with => "becky567")
-        fill_in(:password, :with => "kittens")
-        click_button 'submit'
-        visit "Books/#{Book2.id}"
-        click_button "Delete Book"
-        expect(page.status_code).to eq(200)
-        expect(Book.find_by(:title => "look at this Book")).to be_instance_of(Book)
-        expect(page.current_path).to include('/books')
-      end
-    end
-
-    context "logged out" do
-      it 'does not load let user delete a Book if not logged in' do
-        Book = Book.create(:title => "Booking!", :user_id => 1)
-        visit '/books/1'
-        expect(page.current_path).to eq("/login")
-      end
     end
   end
-
 end
