@@ -50,4 +50,10 @@ class BookController < ApplicationController
     erb :'/books/show'
   end
 
+  #delete method
+  get 'books/:slug' do
+    @book = Book.find_by_slug(params[:slug])
+    current_user.books.delete(@book)
+  end
+
 end

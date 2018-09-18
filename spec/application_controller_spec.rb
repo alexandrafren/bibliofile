@@ -175,7 +175,8 @@ describe 'new action' do
       it 'displays a single Book' do
 
         user = User.create(:username => "becky567", :password => "kittens")
-        Book = Book.create(:title => "i am a boss at Booking", :user_id => user.id)
+        book = Book.create(:title => "i am a boss at Booking", :author => "Becky")
+        user.books << book
 
         visit '/login'
 
@@ -183,11 +184,10 @@ describe 'new action' do
         fill_in(:password, :with => "kittens")
         click_button 'submit'
 
-        visit "/books/#{Book.id}"
-        expect(page.status_code).to eq(200)
-        expect(page.body).to include("Delete Book")
-        expect(page.body).to include(Book.content)
-        expect(page.body).to include("Edit Book")
+        visit "/books/#{book.slug}"
+        expect(page.body).to include("Want to remove this book from your shelf?")
+        expect(page.body).to include(book.title)
+        expect(page.body).to include("Edit Your Review of this Book")
       end
     end
 
