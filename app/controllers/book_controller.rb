@@ -46,12 +46,16 @@ class BookController < ApplicationController
   end
 
   get '/books/:slug' do
-    @book = Book.find_by_slug(params[:slug])
-    erb :'/books/show'
+    if logged_in?
+      @book = Book.find_by_slug(params[:slug])
+      erb :'/books/show'
+    else
+      redirect to '/login'
+    end
   end
 
   #delete method
-  get 'books/:slug' do
+  get 'books/:slug/delete' do
     @book = Book.find_by_slug(params[:slug])
     current_user.books.delete(@book)
   end
