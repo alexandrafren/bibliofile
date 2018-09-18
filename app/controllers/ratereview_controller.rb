@@ -24,10 +24,15 @@ class RatereviewController < ApplicationController
 
   delete '/books/:slug/delete' do
     @book = Book.find_by_slug(params[:slug])
-    @review = Review.find_by(user_id: current_user, book_id: @book.id)
-    @rating = Review.find_by(user_id: current_user, book_id: @book.id)
-    @review.delete
-    @rating.delete
+    @book = Book.find_by_slug(params[:slug])
+    if logged_in? && current_user.books.include?(@book)
+      current_user.books.delete(@book)
+      @review = Review.find_by(user_id: current_user, book_id: @book.id)
+      @rating = Review.find_by(user_id: current_user, book_id: @book.id)
+      @review.destroy
+      @rating.destroy
+    end
     redirect to '/books'
   end
+
 end

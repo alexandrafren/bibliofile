@@ -16,6 +16,16 @@ class BookController < ApplicationController
     end
   end
 
+  #delete method
+  delete 'books/:slug/delete' do
+    @book = Book.find_by_slug(params[:slug])
+    binding.pry
+    if logged_in? && current_user.books.include?(@book)
+      #current_user.books.delete(@book)
+    end
+    redirect to '/books'
+  end
+
   post '/books' do
     @user = current_user
     @book = Book.find_or_create_by(title: params[:title])
@@ -45,6 +55,8 @@ class BookController < ApplicationController
     redirect to '/books'
   end
 
+
+
   get '/books/:slug' do
     if logged_in?
       @book = Book.find_by_slug(params[:slug])
@@ -54,10 +66,6 @@ class BookController < ApplicationController
     end
   end
 
-  #delete method
-  get 'books/:slug/delete' do
-    @book = Book.find_by_slug(params[:slug])
-    current_user.books.delete(@book)
-  end
+
 
 end
