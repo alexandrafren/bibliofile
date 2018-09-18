@@ -9,18 +9,26 @@ class BookController < ApplicationController
   end
 
   get '/books/new' do
-    erb :'/books/new'
+    if logged_in?
+      erb :'/books/new'
+    else
+      redirect to '/login'
+    end
   end
 
   post '/books' do
     @user = current_user
     @book = Book.find_or_create_by(title: params[:title])
-    @book.author = params[:author]
-    @book.save
-    @user.books << @book
-    Rating.create(user_id: current_user.id, book_id: @book.id, value: params[:rating])
-    Review.create(user_id: current_user.id, book_id: @book.id, content: params[:review])
-    redirect to '/books'
+    if params[:title] != "" && params[:author] != ""
+      @book.author = params[:author]
+      @book.save
+      @user.books << @book
+      Rating.create(user_id: current_user.id, book_id: @book.id, value: params[:rating])
+      Review.create(user_id: current_user.id, book_id: @book.id, content: params[:review])
+      redirect to '/books'
+    else
+      redirect to '/books/new'
+    end
   end
 
   get '/books/new/:slug' do

@@ -111,7 +111,7 @@ end
 
 describe 'new action' do
     context 'logged in' do
-      it 'lets user view new tweet form if logged in' do
+      it 'lets user view new Book form if logged in' do
         user = User.create(:username => "becky567", :password => "kittens")
 
         visit '/login'
@@ -123,7 +123,7 @@ describe 'new action' do
         expect(page.status_code).to eq(200)
       end
 
-      it 'lets user create a tweet if they are logged in' do
+      it 'lets user create a book if they are logged in' do
         user = User.create(:username => "becky567", :password => "kittens")
 
         visit '/login'
@@ -133,40 +133,17 @@ describe 'new action' do
         click_button 'submit'
 
         visit '/books/new'
-        fill_in(:content, :with => "tweet!!!")
-        click_button 'submit'
+        fill_in(:title, :with => "Outliers")
+        fill_in(:author, :with => "Malcolm Gladwell")
+        click_button 'Add This Book!'
 
         user = User.find_by(:username => "becky567")
-        tweet = Tweet.find_by(:content => "tweet!!!")
-        expect(tweet).to be_instance_of(Tweet)
-        expect(tweet.user_id).to eq(user.id)
+        book = Book.find_by(:title => "Outliers")
+        expect(book).to be_instance_of(Book)
         expect(page.status_code).to eq(200)
       end
 
-      it 'does not let a user tweet from another user' do
-        user = User.create(:username => "becky567", :password => "kittens")
-        user2 = User.create(:username => "silverstallion", :password => "horses")
-
-        visit '/login'
-
-        fill_in(:username, :with => "becky567")
-        fill_in(:password, :with => "kittens")
-        click_button 'submit'
-
-        visit '/books/new'
-
-        fill_in(:content, :with => "tweet!!!")
-        click_button 'submit'
-
-        user = User.find_by(:id=> user.id)
-        user2 = User.find_by(:id => user2.id)
-        tweet = Tweet.find_by(:content => "tweet!!!")
-        expect(tweet).to be_instance_of(Tweet)
-        expect(tweet.user_id).to eq(user.id)
-        expect(tweet.user_id).not_to eq(user2.id)
-      end
-
-      it 'does not let a user create a blank tweet' do
+      it 'does not let a user create a blank book' do
         user = User.create(:username => "becky567", :password => "kittens")
 
         visit '/login'
@@ -177,16 +154,16 @@ describe 'new action' do
 
         visit '/books/new'
 
-        fill_in(:content, :with => "")
-        click_button 'submit'
+        fill_in(:author, :with => "")
+        click_button 'Add This Book!'
 
-        expect(Tweet.find_by(:content => "")).to eq(nil)
+        expect(Book.find_by(:title => "")).to eq(nil)
         expect(page.current_path).to eq("/books/new")
       end
     end
 
     context 'logged out' do
-      it 'does not let user view new tweet form if not logged in' do
+      it 'does not let user view new Book form if not logged in' do
         get '/books/new'
         expect(last_response.location).to include("/login")
       end
@@ -195,10 +172,10 @@ describe 'new action' do
 
   describe 'show action' do
     context 'logged in' do
-      it 'displays a single tweet' do
+      it 'displays a single Book' do
 
         user = User.create(:username => "becky567", :password => "kittens")
-        tweet = Tweet.create(:content => "i am a boss at tweeting", :user_id => user.id)
+        Book = Book.create(:title => "i am a boss at Booking", :user_id => user.id)
 
         visit '/login'
 
@@ -206,19 +183,19 @@ describe 'new action' do
         fill_in(:password, :with => "kittens")
         click_button 'submit'
 
-        visit "/books/#{tweet.id}"
+        visit "/books/#{Book.id}"
         expect(page.status_code).to eq(200)
-        expect(page.body).to include("Delete Tweet")
-        expect(page.body).to include(tweet.content)
-        expect(page.body).to include("Edit Tweet")
+        expect(page.body).to include("Delete Book")
+        expect(page.body).to include(Book.content)
+        expect(page.body).to include("Edit Book")
       end
     end
 
     context 'logged out' do
-      it 'does not let a user view a tweet' do
+      it 'does not let a user view a Book' do
         user = User.create(:username => "becky567", :password => "kittens")
-        tweet = Tweet.create(:content => "i am a boss at tweeting", :user_id => user.id)
-        get "/books/#{tweet.id}"
+        Book = Book.create(:title => "i am a boss at Booking", :user_id => user.id)
+        get "/books/#{Book.id}"
         expect(last_response.location).to include("/login")
       end
     end
@@ -226,9 +203,9 @@ describe 'new action' do
 
   describe 'edit action' do
     context "logged in" do
-      it 'lets a user view tweet edit form if they are logged in' do
+      it 'lets a user view Book edit form if they are logged in' do
         user = User.create(:username => "becky567", :password => "kittens")
-        tweet = Tweet.create(:content => "tweeting!", :user_id => user.id)
+        Book = Book.create(:title => "Booking!", :user_id => user.id)
         visit '/login'
 
         fill_in(:username, :with => "becky567")
@@ -236,28 +213,28 @@ describe 'new action' do
         click_button 'submit'
         visit '/books/1/edit'
         expect(page.status_code).to eq(200)
-        expect(page.body).to include(tweet.content)
+        expect(page.body).to include(Book.content)
       end
 
-      it 'does not let a user edit a tweet they did not create' do
+      it 'does not let a user edit a Book they did not create' do
         user1 = User.create(:username => "becky567", :password => "kittens")
-        tweet1 = Tweet.create(:content => "tweeting!", :user_id => user1.id)
+        Book1 = Book.create(:title => "Booking!", :user_id => user1.id)
 
         user2 = User.create(:username => "silverstallion", :password => "horses")
-        tweet2 = Tweet.create(:content => "look at this tweet", :user_id => user2.id)
+        Book2 = Book.create(:title => "look at this Book", :user_id => user2.id)
 
         visit '/login'
 
         fill_in(:username, :with => "becky567")
         fill_in(:password, :with => "kittens")
         click_button 'submit'
-        visit "/books/#{tweet2.id}/edit"
+        visit "/books/#{Book2.id}/edit"
         expect(page.current_path).to include('/books')
       end
 
-      it 'lets a user edit their own tweet if they are logged in' do
+      it 'lets a user edit their own Book if they are logged in' do
         user = User.create(:username => "becky567", :password => "kittens")
-        tweet = Tweet.create(:content => "tweeting!", :user_id => 1)
+        Book = Book.create(:title => "Booking!", :user_id => 1)
         visit '/login'
 
         fill_in(:username, :with => "becky567")
@@ -265,17 +242,17 @@ describe 'new action' do
         click_button 'submit'
         visit '/books/1/edit'
 
-        fill_in(:content, :with => "i love tweeting")
+        fill_in(:title, :with => "i love Booking")
 
         click_button 'submit'
-        expect(Tweet.find_by(:content => "i love tweeting")).to be_instance_of(Tweet)
-        expect(Tweet.find_by(:content => "tweeting!")).to eq(nil)
+        expect(Book.find_by(:title => "i love Booking")).to be_instance_of(Book)
+        expect(Book.find_by(:title => "Booking!")).to eq(nil)
         expect(page.status_code).to eq(200)
       end
 
       it 'does not let a user edit a text with blank content' do
         user = User.create(:username => "becky567", :password => "kittens")
-        tweet = Tweet.create(:content => "tweeting!", :user_id => 1)
+        Book = Book.create(:title => "Booking!", :user_id => 1)
         visit '/login'
 
         fill_in(:username, :with => "becky567")
@@ -283,10 +260,10 @@ describe 'new action' do
         click_button 'submit'
         visit '/books/1/edit'
 
-        fill_in(:content, :with => "")
+        fill_in(:title, :with => "")
 
         click_button 'submit'
-        expect(Tweet.find_by(:content => "i love tweeting")).to be(nil)
+        expect(Book.find_by(:title => "i love Booking")).to be(nil)
         expect(page.current_path).to eq("/books/1/edit")
       end
     end
@@ -301,43 +278,43 @@ describe 'new action' do
 
   describe 'delete action' do
     context "logged in" do
-      it 'lets a user delete their own tweet if they are logged in' do
+      it 'lets a user delete their own Book if they are logged in' do
         user = User.create(:username => "becky567", :password => "kittens")
-        tweet = Tweet.create(:content => "tweeting!", :user_id => 1)
+        Book = Book.create(:title => "Booking!", :user_id => 1)
         visit '/login'
 
         fill_in(:username, :with => "becky567")
         fill_in(:password, :with => "kittens")
         click_button 'submit'
-        visit 'tweets/1'
-        click_button "Delete Tweet"
+        visit 'Books/1'
+        click_button "Delete Book"
         expect(page.status_code).to eq(200)
-        expect(Tweet.find_by(:content => "tweeting!")).to eq(nil)
+        expect(Book.find_by(:title => "Booking!")).to eq(nil)
       end
 
-      it 'does not let a user delete a tweet they did not create' do
+      it 'does not let a user delete a Book they did not create' do
         user1 = User.create(:username => "becky567", :password => "kittens")
-        tweet1 = Tweet.create(:content => "tweeting!", :user_id => user1.id)
+        Book1 = Book.create(:title => "Booking!", :user_id => user1.id)
 
         user2 = User.create(:username => "silverstallion", :password => "horses")
-        tweet2 = Tweet.create(:content => "look at this tweet", :user_id => user2.id)
+        Book2 = Book.create(:title => "look at this Book", :user_id => user2.id)
 
         visit '/login'
 
         fill_in(:username, :with => "becky567")
         fill_in(:password, :with => "kittens")
         click_button 'submit'
-        visit "tweets/#{tweet2.id}"
-        click_button "Delete Tweet"
+        visit "Books/#{Book2.id}"
+        click_button "Delete Book"
         expect(page.status_code).to eq(200)
-        expect(Tweet.find_by(:content => "look at this tweet")).to be_instance_of(Tweet)
+        expect(Book.find_by(:title => "look at this Book")).to be_instance_of(Book)
         expect(page.current_path).to include('/books')
       end
     end
 
     context "logged out" do
-      it 'does not load let user delete a tweet if not logged in' do
-        tweet = Tweet.create(:content => "tweeting!", :user_id => 1)
+      it 'does not load let user delete a Book if not logged in' do
+        Book = Book.create(:title => "Booking!", :user_id => 1)
         visit '/books/1'
         expect(page.current_path).to eq("/login")
       end
