@@ -8,10 +8,15 @@
 
     <div class="container">
       <h1>Bibliofile</h1>
-      <div class='nav-bar'><a href='/'>Home</a>
-      <a href='/books'>Books</a>
-      <a href='/logout'>Logout</a>
+      <div class='nav-bar'>
+        <a href='/'>Home</a>
+        <a href='/books'>Books</a>
+        <a href='/users'>Users</a>
+        <a href='/logout'>Logout</a>
     </div>
+      <% if flash.has?(:message) %>
+      <%= flash[:message] %>
+      <% end %>
       <%= yield %>
     </div>
 

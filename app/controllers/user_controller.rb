@@ -1,14 +1,20 @@
 require 'rack-flash'
 class UserController < ApplicationController
   use Rack::Flash
+
   get '/users' do
-    @users = User.all
-    erb :'/users/users'
+    if logged_in?
+      @users = User.all
+      erb :'/users/users'
+    else
+      flash[:message] = "You must be logged in to see that page!"
+      redirect to '/login'
+    end
   end
 
   get '/users/new' do
     if logged_in?
-      flash[:message] = "Already logged in! Redirecting to Books"
+      flash[:message] = "You were already logged in! Redirected to Books"
       redirect to '/books'
     else
       erb :'/users/new'
@@ -32,7 +38,7 @@ class UserController < ApplicationController
 
   get '/login' do
     if logged_in?
-      flash[:message] = "You are already logged in! Redirecting to Books"
+      flash[:message] = "You were already logged in! Redirected to Books"
       redirect to '/books'
     else
       erb :'/users/login'
