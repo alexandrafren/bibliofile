@@ -1,9 +1,12 @@
+require 'rack-flash'
 class BookController < ApplicationController
+  use Rack::Flash
   get '/books' do
     if logged_in?
       @books = Book.all
       erb :'/books/books'
     else
+      flash[:message] = "You must be logged in to view this page."
       redirect to '/login'
     end
   end
@@ -12,19 +15,10 @@ class BookController < ApplicationController
     if logged_in?
       erb :'/books/new'
     else
+      flash[:message] = "You must be logged in to view this page."
       redirect to '/login'
     end
   end
-
-  #delete method-moved to ratereview controller
-  #delete 'books/:slug/delete' do
-   # @book = Book.find_by_slug(params[:slug])
-    #binding.pry
-    #if logged_in? && current_user.books.include?(@book)
-    #  #current_user.books.delete(@book)
-   # end
-   # redirect to '/books'
- # end
 
  post '/book/:slug' do
    @book = Book.find_by_slug(params[:slug])
@@ -46,6 +40,7 @@ class BookController < ApplicationController
       Review.create(user_id: current_user.id, book_id: @book.id, content: params[:review])
       redirect to '/books'
     else
+      flash[:message] = "Part of your entry was invalid. Please try again."
       redirect to '/books/new'
     end
   end
@@ -62,6 +57,7 @@ class BookController < ApplicationController
       @book = Book.find_by_slug(params[:slug])
       erb :'/books/show'
     else
+      flash[:message] = "You must be logged in to view this content."
       redirect to '/login'
     end
   end
