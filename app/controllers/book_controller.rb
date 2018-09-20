@@ -16,15 +16,15 @@ class BookController < ApplicationController
     end
   end
 
-  #delete method
-  delete 'books/:slug/delete' do
-    @book = Book.find_by_slug(params[:slug])
-    binding.pry
-    if logged_in? && current_user.books.include?(@book)
-      #current_user.books.delete(@book)
-    end
-    redirect to '/books'
-  end
+  #delete method-moved to ratereview controller
+  #delete 'books/:slug/delete' do
+   # @book = Book.find_by_slug(params[:slug])
+    #binding.pry
+    #if logged_in? && current_user.books.include?(@book)
+    #  #current_user.books.delete(@book)
+   # end
+   # redirect to '/books'
+ # end
 
   post '/books' do
     @user = current_user
