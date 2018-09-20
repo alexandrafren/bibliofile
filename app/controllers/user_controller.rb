@@ -8,6 +8,7 @@ class UserController < ApplicationController
 
   get '/users/new' do
     if logged_in?
+      flash[:message] = "Already logged in! Redirecting to Books"
       redirect to '/books'
     else
       erb :'/users/new'
@@ -16,7 +17,7 @@ class UserController < ApplicationController
 
   post '/users' do
     user = User.find_by(username: params[:username])
-    if params[:username] != "" && params[:password] != ""&& user == nil
+    if params[:username] != "" && params[:password] != ""&& user != nil
       @user = User.new
       @user.username = params[:username]
       @user.password = params[:password]
@@ -24,12 +25,14 @@ class UserController < ApplicationController
       session[:user_id] = @user.id
       redirect to '/books'
     else
+      flash[:message] = "Invalid Entries. Please try again."
       redirect to '/users/new'
     end
   end
 
   get '/login' do
     if logged_in?
+      flash[:message] = "You are already logged in! Redirecting to Books"
       redirect to '/books'
     else
       erb :'/users/login'
@@ -49,6 +52,7 @@ class UserController < ApplicationController
   get '/logout' do
     if logged_in?
       session.clear
+      flash[:message] = "Logged Out!"
       redirect to '/login'
     else
       redirect to '/'
