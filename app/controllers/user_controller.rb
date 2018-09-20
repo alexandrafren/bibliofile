@@ -13,8 +13,9 @@ class UserController < ApplicationController
   end
 
   post '/users' do
-    @user = User.new
-    if params[:username] != "" && params[:password] != ""
+    user = User.find_by(username: params[:username])
+    if params[:username] != "" && params[:password] != ""&& user == nil
+      @user = User.new
       @user.username = params[:username]
       @user.password = params[:password]
       @user.save
