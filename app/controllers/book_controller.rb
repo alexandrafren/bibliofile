@@ -6,7 +6,7 @@ class BookController < ApplicationController
       @books = Book.all
       erb :'/books/books'
     else
-      flash[:message] = "You must be logged in to view this page."
+      flash[:message] = "You must be logged in to view that page."
       redirect to '/login'
     end
   end
@@ -15,7 +15,7 @@ class BookController < ApplicationController
     if logged_in?
       erb :'/books/new'
     else
-      flash[:message] = "You must be logged in to view this page."
+      flash[:message] = "You must be logged in to view that page."
       redirect to '/login'
     end
   end
@@ -57,7 +57,7 @@ class BookController < ApplicationController
       @book = Book.find_by_slug(params[:slug])
       erb :'/books/show'
     else
-      flash[:message] = "You must be logged in to view this content."
+      flash[:message] = "You must be logged in to view that content."
       redirect to '/login'
     end
   end
