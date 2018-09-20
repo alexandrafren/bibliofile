@@ -2,6 +2,8 @@ class RatereviewController < ApplicationController
   #paths for updating a specific users reviews and ratings
   get '/books/:slug/edit' do
     @book = Book.find_by_slug(params[:slug])
+    @review = Review.find_by(user_id: current_user, book_id: @book.id)
+    @rating = Rating.find_by(user_id: current_user, book_id: @book.id)
     if logged_in?
       erb :'/books/edit'
     end
@@ -10,15 +12,13 @@ class RatereviewController < ApplicationController
   patch '/books/:slug' do
     @book = Book.find_by_slug(params[:slug])
     @review = Review.find_by(user_id: current_user, book_id: @book.id)
-    @rating = Review.find_by(user_id: current_user, book_id: @book.id)
-    if params[:review] != nil
+    @rating = Rating.find_by(user_id: current_user, book_id: @book.id)
+    if params[:review] != nil && params[:rating] != nil
       @review.content = params[:review]
       @review.save
-      if params[:rating] != nil
-        @rating.value = params[:rating]
-        @rating.save
-        redirect to '/books/#{@book.slug}'
-      end
+      @rating.value = params[:rating]
+      @rating.save
+      redirect to '/books'
     end
   end
 

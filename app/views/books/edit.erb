@@ -1,7 +1,7 @@
 <p>Editing <%current_user.username%>'s review of <%@book.title%>.</p>
-<p>Current Rating:<%= @book.rating.value %> out of 5.</p>
-<p>Current Review:<%= @book.review.content %></p>
-<form action='/books/<%@book.slug%>' method='patch'>
+<p>Current Rating:<%= @rating.value%> out of 5.</p>
+<p>Current Review:<%= @review.content %></p>
+<form action='/books/<%=@book.slug%>' method='post'>
   <input id="hidden" type="hidden" name="_method" value="patch">
   <label>Rating</label>
   <input type='radio' name='rating' value='1'>1
