@@ -12,7 +12,8 @@ class RatereviewController < ApplicationController
       flash[:message] = "You must be logged in to edit a book."
       redirect to '/login'
     elsif current_user.books.include?(@book) == nil
-      flash[:message] = "You do not currently have this book on your shelf."
+      flash[:message] = "You do not currently have that book on your shelf. Please add it first."
+      redirect to '/books'
     end
   end
 
