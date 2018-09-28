@@ -2,22 +2,14 @@ require 'rack-flash'
 class BookController < ApplicationController
   use Rack::Flash
   get '/books' do
-    if logged_in?
-      @books = Book.all
-      erb :'/books/books'
-    else
-      flash[:message] = "You must be logged in to view that page."
-      redirect to '/login'
-    end
+    redirect_if_not_logged_in
+    @books = Book.all
+    erb :'/books/books'
   end
 
   get '/books/new' do
-    if logged_in?
-      erb :'/books/new'
-    else
-      flash[:message] = "You must be logged in to view that page."
-      redirect to '/login'
-    end
+    redirect_if_not_logged_in
+    erb :'/books/new'
   end
 
  post '/book/:slug' do
@@ -50,16 +42,10 @@ class BookController < ApplicationController
     erb :'/books/find_by'
   end
 
-
-
   get '/books/:slug' do
-    if logged_in?
-      @book = Book.find_by_slug(params[:slug])
-      erb :'/books/show'
-    else
-      flash[:message] = "You must be logged in to view that content."
-      redirect to '/login'
-    end
+    redirect_if_not_logged_in
+    @book = Book.find_by_slug(params[:slug])
+    erb :'/books/show'
   end
 
 
