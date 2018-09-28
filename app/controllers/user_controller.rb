@@ -3,13 +3,9 @@ class UserController < ApplicationController
   use Rack::Flash
 
   get '/users' do
-    if logged_in?
-      @users = User.all
-      erb :'/users/users'
-    else
-      flash[:message] = "You must be logged in to see that page!"
-      redirect to '/login'
-    end
+    redirect_if_not_logged_in
+    @users = User.all
+    erb :'/users/users'
   end
 
   get '/users/new' do
